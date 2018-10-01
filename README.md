@@ -4,7 +4,7 @@ This wrapper is intended to be used via emscripten to interface with OpenEXR fro
 JavaScript. It has the following dependencies:
 
 - [emscripten](http://kripken.github.io/emscripten-site/index.html): To compile the
-  dependencies and the wrapper itself. Tested version is emscripten-1.35.0.
+  dependencies and the wrapper itself. Tested version is emscripten-1.38.12.
 - [OpenEXR](http://openexr.com/): The main library. Tested version is 2.2.1. Both the
   openexr and the ilmbase libraries are required.
 - [zlib](http://zlib.net/): Dependency for OpenEXR. Tested version is 1.2.11.
@@ -30,17 +30,17 @@ optimization, but their use is somewhat questionable[1].
 2. Building ilmbase
 	0. `cd $ilmbasedir && mkdir build && cd build`
 	1. `cmake .. -DCMAKE_INSTALL_PREFIX=$WRAPPER_INSTALL -DCMAKE_BUILD_TYPE=Release`
-	2. Possibly set `ZLIB_LIBRARY` and `ZLIB_INCLUDE_DIR`
-	3. Possibly remove incorrect quotes around the node path in CMakeLists.txt
-	4. Edit `config/IlmBaseConfig.h`, setting `HAVE_PTHREAD 0`.
-	5. Optionally add `--llvm-lto 1` to compiler and linker flags and set `-O3`.
-	6. `make -j12 && make install`
+	2. Possibly remove incorrect quotes around the node path in CMakeLists.txt
+	3. Edit `config/IlmBaseConfig.h`, setting `HAVE_PTHREAD 0`.
+	4. Optionally add `--llvm-lto 1` to compiler and linker flags and set `-O3`.
+	5. `make -j12 && make install`
 3. Building openexr
 	0. cd openexr && mkdir build && cd build
 	1. `cmake .. -DCMAKE_INSTALL_PREFIX=$WRAPPER_INSTALL -DCMAKE_BUILD_TYPE=Release -DILMBASE_PACKAGE_PREFIX=$WRAPPER_INSTALL`
-	2. Optionally add `--llvm-lto 1` to compiler and linker flags and set `-O3`.
-	3. `make -j12 && make install`
-	4. Building the `dwaLookups.h` and `b44ExpLogTable.h` headers requires using node to
+	2. Possibly set `ZLIB_LIBRARY` and `ZLIB_INCLUDE_DIR`
+	3. Optionally add `--llvm-lto 1` to compiler and linker flags and set `-O3`.
+	4. `make -j12 && make install`
+	5. Building the `dwaLookups.h` and `b44ExpLogTable.h` headers requires using node to
 		run the javascript programs built for this purpose. Building with `make VERBOSE=1`
 		can help figuring out the exact parameters.
 4. Building the wrapper

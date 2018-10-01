@@ -100,7 +100,6 @@ struct EXRImage
 	}
 };
 
-extern "C"
 EXRImage loadEXRRaw(char const * buffer, std::size_t size)
 {
 	using namespace OPENEXR_IMF_NAMESPACE;
@@ -132,14 +131,12 @@ EXRImage loadEXRRaw(char const * buffer, std::size_t size)
 	return image;
 }
 
-extern "C"
-EXRImage loadEXVec(std::vector<char> const & bytes)
+EXRImage loadEXRVec(std::vector<char> const & bytes)
 {
 	return loadEXRRaw(bytes.data(), bytes.size());
 }
 
-extern "C"
-EXRImage loadEXStr(std::string const & bytes)
+EXRImage loadEXRStr(std::string const & bytes)
 {
 	
 	return loadEXRRaw(bytes.data(), bytes.size());
@@ -162,8 +159,8 @@ EMSCRIPTEN_BINDINGS(Wrapper)
 		.function("channels", &EXRImage::channels)
 	;
 	function("loadEXRRaw", &loadEXRRaw, allow_raw_pointer<arg<0>>());
-	function("loadEXRVec", &loadEXVec);
-	function("loadEXRStr", &loadEXStr);
+	function("loadEXRVec", &loadEXRVec);
+	function("loadEXRStr", &loadEXRStr);
 }
 
 #endif

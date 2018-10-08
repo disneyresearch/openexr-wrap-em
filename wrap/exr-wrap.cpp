@@ -120,7 +120,12 @@ EXRImage loadEXRRaw(char const * buffer, std::size_t size)
 		{
 			auto const & name = it.name();
 			image.planes[name].resize(image.width * image.height);
-			fb.insert(name, Slice(FLOAT, (char*)image.planes[name].data(), strideX, strideY));
+			// OpenEXR needs to be passed a pointer that, when the window is applied,
+			// leads to the start of the data buffer, even if that pointer is illegal
+			auto startOffset = window.min.x + window.min.y * image.width;
+			fb.insert(name, Slice(FLOAT,
+				reinterpret_cast<char*>(image.planes[name].data() - startOffset),
+				strideX, strideY));
 		}
 		file.setFrameBuffer(fb);
 		file.readPixels(window.min.y, window.max.y);
